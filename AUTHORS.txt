@@ -1,0 +1,17 @@
+INSPIRATION:
+Neotext was created by Tim Langeman, and inspired by Ted Nelson.
+The idea for the project arose while Tim was writing an article reviewing
+Ted Nelson's Ph.D thesis titled "Philosophy of Hypertext".
+
+You can read more about Ted Nelson's vision of hypertext.
+https://www.openpolitics.com/articles/ted-nelson-philosophy-of-hypertext.html
+
+Neotext is a continuation of the "Worse is Better" aproach to hypertext,
+but is intended to inspire others to work a fuller vision, more in keeping
+with Nelson's Xanadu.
+
+
+Major contributing authors include:
+
+- Tim Langeman <timlangeman@gmail.com>
+- Your Name here

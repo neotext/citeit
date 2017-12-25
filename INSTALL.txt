@@ -1,0 +1,37 @@
+INSTRUCTIONS ON INSTALLING the CiteIt Flask project
+====================================================
+
+install python 3.x
+http://docs.python-guide.org/en/latest/starting/installation/
+
+The Pip package manager should be installed with Python
+From the command line:
+
+You can use pip to install the required python libraries:
+  pip install vitualenv
+
+http://docs.python-guide.org/en/latest/dev/virtualenvs/
+Use a Virtual Environment to house all your libraries
+  virtualenv citeit
+
+Activate to Virtual Environment
+  source citeit/bin/activate
+
+You should see the command prompt change to something like:
+  (citeit) Your Computer:your_username $
+
+Install the requirements listed in the requirements text file
+  pip install -r requirements.txt
+
+
+
+OPTIONAL TOOLS:
+==================
+If you don't already have your own tool preferences, here's a few ideas
+to get you started:
+
+Github's Atom Editor
+https://atom.io/
+
+Desktop Git Client
+https://desktop.github.com/
