@@ -71,10 +71,22 @@ class Document:
                 """ TODO: Add better error tracking """
                 text = "document: HTTPError"
                 return text
+
+            except requests.SSLError:
+                self.request_stop = datetime.now()
+
+                """ TODO: Add better error tracking """
+                text = "document: SSLError"
+                return text
+
         else:
-            with urllib.request.urlopen(self.url) as url:
-                raw_data = url.read()
-            return raw_data
+            try:
+                with urllib.request.urlopen(self.url) as url:
+                    raw_data = url.read()
+                return raw_data
+
+            except urllib.error.URLError as e:
+                return "document: urllib.error: " + e.reason
 
         return ''
 
