@@ -6,6 +6,7 @@ from lib.citeit_quote_context.quote import Quote
 from lib.citeit_quote_context.document import Document
 import requests
 from multiprocessing import Pool
+from multiprocessing.pool import ThreadPool
 import time
 
 
@@ -18,6 +19,7 @@ def post_url(url_string):
         url = URL(url_string)
         citations = url.citations()
         # TODO: Save to DB
+        return citations
     else:
         print("Error: Not a valid url")
 
@@ -78,24 +80,38 @@ print("\n\n" + d['citing_quote'])
 print("\n\n" + d['citing_context_after'])
 """
 
-"""
-#3) Simple Multiprocession example, using square function
 
-pool = Pool(processes=2)
+# 3) Simple Multiprocession example, using square function
 
-results_list = []
-results = [(i, pool.apply_async(square, [i])) for i in range(17, 25)]
-start_time = time.time()
-for i, result in results:
-    results_list.append(result.get())
-    print("Result (%d): %s (%.2f secs)" % (i, result.get(), time.time() - start_time))
-pprint(results_list)
-"""
+def foo(word, number):
+    time.sleep(1.0)
+    print(word*number)
+    return number
+
+def starfoo(args):
+    return foo(*args)
+
+words = ['hello', 'world', 'test', 'word', 'another test']
+numbers = [1,2,3,4,5]
+pool = ThreadPool(2)
+
+# We need to zip together the two lists because map only supports calling functions
+# with one argument. In Python 3.3+, you can use starmap instead.
+results = pool.map(starfoo, zip(words, numbers))
+
+pool.close()
+pool.join()
+print(results)
+
+
 
 """
-# 4) Document Class: POST URL
+# 4) All Citations: Post URL
 
 url_string = 'https://www.openpolitics.com/articles/ted-nelson-philosophy-of-hypertext.html'
 citations = post_url(url_string)
-print(str(len(citations)) + " citations found" )
+print(len(citations))
+# for c in citations:
+#    pprint(c['citing_quote'])
+#   print(c['sha1'])  # + " citations found")
 """
