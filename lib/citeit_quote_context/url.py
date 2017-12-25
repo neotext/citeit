@@ -15,7 +15,7 @@ from multiprocessing import Pool
 import time
 import pprint
 
-NUM_DOWNLOAD_PROCESSES = 2
+NUM_DOWNLOAD_PROCESSES = 40
 
 __author__ = 'Tim Langeman'
 __email__ = "timlangeman@gmail.com"
@@ -124,48 +124,24 @@ class URL:
                 print("Published: " + quote_dict['cited_url'])
                 """
     def citations(self):
-        """ Returns a list of Quote Lookup results for all citations on this page
+        """ Return a list of Quote Lookup results for all citations on this page
             Uses asycnronous pool to achieve parallel processing
             calls load_quote_data() function
             for all values in self.citations_list_dict
             using python 'map' function
         """
-        pool = Pool(processes=2)
-        results_list = []
-        results = [(citation, pool.apply_async(
-                   load_quote_data, [citation]))
-                   for citation in self.citations_list_dict()
-                   ]
-        start_time = time.time()
-        for i, result in results:
-            results_list.append(result.get())
-            print("Result (%d): %s (%.2f secs)" % (
-                    i, result.get(),
-                    time.time() - start_time
-                    )
-                  )
-        pprint(results_list)
-
-        """
-        results_list = []
+        result_list = []
         citations_list_dict = self.citations_list_dict()
-        print("Looking up citations: ")
         pool = Pool(processes=NUM_DOWNLOAD_PROCESSES)
-
-        results_list = [pool.map_async(load_quote_data, citation)
-                        for citation in citations_list_dict]
-
-        for result in results_list:
-            print("result")
-
+        try:
+            for quote_keys in citations_list_dict:
+                result_list = pool.map(load_quote_data, citations_list_dict)
 
         except ValueError:
-
+            # TODO: add better error handling
             print("Skipping map value ..")
-        """
 
-        """ TODO: add better error handling """
-        return results_list
+        return result_list
 
 
 # ################## Non-class functions #######################
