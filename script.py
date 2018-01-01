@@ -80,7 +80,7 @@ print("\n\n" + d['citing_quote'])
 print("\n\n" + d['citing_context_after'])
 """
 
-
+"""
 # 3) Simple Multiprocession example, using square function
 
 def foo(word, number):
@@ -102,10 +102,34 @@ results = pool.map(starfoo, zip(words, numbers))
 pool.close()
 pool.join()
 print(results)
-
-
-
 """
+
+url_string = 'https://www.openpolitics.com/articles/ted-nelson-philosophy-of-hypertext.html'
+url = URL(url_string)
+citations = url.citations()
+
+for quote in citations:
+    print(u['sha1'])
+    save_citation(quote)
+
+
+def save_citation(quote_dict)
+    sha1 = quote_dict['sha1']
+    quote_dict_defaults = quote_dict
+    quote_dict_defaults.pop('sha1')  # remove sha1 key
+    q, created = Quote.objects.update_or_create(
+        sha1=sha1,
+        defaults=quote_dict_defaults
+    )
+    try:
+        if q:
+            q.publish_json()
+        else:
+            print("Unable to publish: " + quote_dict['cited_url'])
+    except ValueError:
+        print("Error publishing: " + quote_dict['cited_url'])
+    print("Published: " + quote_dict['cited_url'])
+
 # 4) All Citations: Post URL
 
 url_string = 'https://www.openpolitics.com/articles/ted-nelson-philosophy-of-hypertext.html'

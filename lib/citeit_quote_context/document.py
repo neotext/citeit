@@ -57,7 +57,7 @@ class Document:
             try:
                 headers = {'user-agent': 'Mozilla/5.0 (Windows NT 6.0;'
                            ' WOW64; rv:24.0) Gecko/20100101 Firefox/24.0'}
-                r = requests.get(self.url, headers=headers)
+                r = requests.get(self.url, headers=headers, verify=False)
                 text = r.text
 
                 print('Downloaded ' + self.url)
