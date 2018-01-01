@@ -40,7 +40,7 @@ to implement it; but I hope we can get closer, as more people come
 to understand what Ted originally proposed.
 
 
-## HISTORY:
+## History:
 Earlier versions of this concept were written for:
 1. PHP: https://github.com/timlangeman/quote-context
 1. Django: https://github.com/neotext/neotext-django-server

@@ -13,9 +13,8 @@ from bs4 import BeautifulSoup
 from functools import lru_cache
 from multiprocessing import Pool
 import time
-import pprint
 
-NUM_DOWNLOAD_PROCESSES = 40
+NUM_DOWNLOAD_PROCESSES = 30
 
 __author__ = 'Tim Langeman'
 __email__ = "timlangeman@gmail.com"
@@ -82,12 +81,15 @@ class URL:
     def citation_urls(self):
         """ Returns a list of the urls that have been cited """
         urls = []
-        for url, text in self.citation_url_text():
+        for url, text in self.citation_url_text().items():
             urls.append(url)
         return urls
 
     def citations_list_dict(self):
-        """ Create list of quote dictionaries """
+        """ Create list of quote dictionaries
+            to be passed to map function.  Data is supplied
+            from urls and text specified in citing
+            document's blockquote and 'cite' attribute."""
         citations_list_dict = []
         for cited_url, citing_quote in self.citation_url_text().items():
             quote = {}
@@ -96,7 +98,7 @@ class URL:
             quote['citing_text'] = self.text
             quote['citing_raw'] = self.raw()
             quote['cited_url'] = cited_url
-        citations_list_dict.append(quote)
+            citations_list_dict.append(quote)
         return citations_list_dict
 
     def publish_citations(self):
@@ -134,13 +136,12 @@ class URL:
         citations_list_dict = self.citations_list_dict()
         pool = Pool(processes=NUM_DOWNLOAD_PROCESSES)
         try:
-            for quote_keys in citations_list_dict:
-                result_list = pool.map(load_quote_data, citations_list_dict)
-
+            result_list = pool.map(load_quote_data, citations_list_dict)
         except ValueError:
             # TODO: add better error handling
             print("Skipping map value ..")
-
+        pool.close()
+        pool.join()
         return result_list
 
 
